@@ -1,5 +1,25 @@
 components:
-- components: []
+- components:
+  - layout_properties: {grid_position: 'QELZMM,HHMHXR'}
+    name: label_2
+    properties: {text: User}
+    type: Label
+  - layout_properties: {grid_position: 'GBCXIG,MJGKGD'}
+    name: text_box_1
+    properties: {}
+    type: TextBox
+  - layout_properties: {grid_position: 'YOQASO,VMGZTZ'}
+    name: label_3
+    properties: {text: Password}
+    type: Label
+  - layout_properties: {grid_position: 'DXSSBH,PCMJTV'}
+    name: text_box_2
+    properties: {}
+    type: TextBox
+  - layout_properties: {grid_position: 'AHDWPV,PXBLCG'}
+    name: button_1
+    properties: {text: Login}
+    type: Button
   layout_properties: {slot: default}
   name: content_panel
   properties: {col_widths: '{}'}
@@ -8,6 +28,10 @@ components:
   name: navbar_links
   properties: {}
   type: FlowPanel
+- layout_properties: {slot: title}
+  name: label_1
+  properties: {text: SQL-Injection}
+  type: Label
 container:
   properties: {html: '@theme:standard-page.html'}
   type: HtmlTemplate
