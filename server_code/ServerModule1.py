@@ -19,3 +19,4 @@ def get_user(user_id):
     cursor.execute("SELECT * FROM users WHERE AccountNo = ?", (user_id,))
     user_id = cursor.fetchone()
     db.close()
+  
