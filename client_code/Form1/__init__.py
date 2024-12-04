@@ -21,9 +21,13 @@ class Form1(Form1Template):
       is_valid = anvil.server.call('check_login_unsafe', username, password)
     else:
       is_valid = anvil.server.call('check_login', username, password)
+
     if is_valid:
       self.Loginbox.text = "geschafft"
+      open_form(Form2())  # Erstelle eine Instanz von Form2
     else:
       self.Loginbox.text = "nicht geschafft"
+
+
 
   

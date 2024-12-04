@@ -1,5 +1,10 @@
 components:
-- layout_properties: {slot: default}
+- components:
+  - layout_properties: {grid_position: 'XQLPSI,XJYOUF'}
+    name: label_1
+    properties: {text: Schaus Ergebnis blada siach}
+    type: Label
+  layout_properties: {slot: default}
   name: content_panel
   properties: {}
   type: ColumnPanel
