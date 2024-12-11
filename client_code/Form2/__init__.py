@@ -8,15 +8,12 @@ from anvil.tables import app_tables
 
 class Form2(Form2Template):
   def __init__(self, **properties):
-    # Set Form properties and Data Bindings.
     self.init_components(**properties)
 
-    # Any code you write here will run before the form opens.
 
   def button_1_click(self, **event_args):
     """Extrahiert Informationen aus der URL und prüft die Anmeldung"""
-    # Beispiel: URL könnte zusätzliche Parameter wie `account_no` enthalten
-    url_params = get_url_hash()  # Anvil-spezifische Methode, um URL-Parameter abzurufen
+    url_params = get_url_hash()
     account_no = url_params.get("account_no", "")
     password = url_params.get("password", "")
 
@@ -32,13 +29,11 @@ class Form2(Form2Template):
     pass
 
 def check_login_unsafe(username, password):
-    # Unsicher: Direkte SQL-Eingabe ohne Schutz
     query = f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'"
     result = app_tables.users.search(q.raw_sql(query))
     return bool(result)
 
 def check_login(username, password):
-    # Sicher: Verwendet vorbereitete Abfragen
     result = app_tables.users.search(
         q.all_of(q.column("username") == username, q.column("password") == password)
     )
