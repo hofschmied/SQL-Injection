@@ -1,26 +1,54 @@
-import anvil.files
-from anvil.files import data_files
 import anvil.server
 import sqlite3
-from anvil.tables import app_tables
-
-
-db = data_files['database.db']
-@anvil.server.callable
-def check_login(username, password):
-    conn = sqlite3.connect(db)
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM Users WHERE username = ? AND password = ?", (username, password))
-    user = cursor.fetchone()
-    conn.close()
-    return user is not None
+import anvil.files
+from anvil.files import data_files
+import anvil.http
+db_path = data_files['database.db']
 
 @anvil.server.callable
-def check_login_unsafe(username, password):
-    conn = sqlite3.connect(db)
-    cursor = conn.cursor()
-    query = f"SELECT * FROM Users WHERE username = '{username}' AND password = '{password}'"
-    cursor.execute(query)
-    user = cursor.fetchone()
-    conn.close()
-    return user is not None
+def login_insecure(username, password):
+    try:
+        with sqlite3.connect(db_path) as connection:
+            cursor = connection.cursor()
+
+            query = f"""
+                SELECT Users.username, Balances.balance 
+                FROM Users 
+                JOIN Balances ON Users.AccountNo = Balances.AccountNo 
+                WHERE Users.username = '{username}' AND Users.password = '{password}'
+
+            """
+            user = cursor.execute(query).fetchone()
+            
+            if user:
+                return "Eingeloggt!"
+            else:
+                return "Login fehlgeschlagen!"
+    except Exception as e:
+        return f"Fehler: {str(e)}"
+
+
+@anvil.server.callable
+def login_secure(username, password):
+    """
+    Sichere Login-Funktion: Verwendet Parameter Binding.
+    Dadurch wird SQL-Injection erschwert.
+    """
+    try:
+        with sqlite3.connect(db_path) as connection:
+            cursor = connection.cursor()
+            
+            query = """
+                SELECT Users.username, Balances.balance
+                FROM Users
+                JOIN Balances ON Users.AccountNo = Balances.AccountNo
+                WHERE Users.username = ? AND Users.password = ?
+            """
+            user = cursor.execute(query, (username, password)).fetchone()
+            
+            if user:
+                return "Eingeloggt!"
+            else:
+                return "Login fehlgeschlagen!"
+    except Exception as e:
+        return f"Fehler: {str(e)}"

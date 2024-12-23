@@ -1,33 +1,43 @@
 from ._anvil_designer import Form1Template
 from anvil import *
-import anvil.tables as tables
-import anvil.tables.query as q
-from ..Form2 import Form2
-from anvil.tables import app_tables
 import anvil.server
 
-
 class Form1(Form1Template):
-  def __init__(self, **properties):
-    # Set Form properties and Data Bindings.
-    self.init_components(**properties)
+    def __init__(self, **properties):
+        self.init_components(**properties)
 
-  def button_1_click(self, **event_args):
-    """This method is called when the button is clicked"""
-    username = self.text_box_1.text
-    password = self.text_box_2.text
+    def perform_login(self, mode):
+        """
+        'mode' kann z.B. 'unsafe' oder 'safe' sein.
+        Der eigentliche Login-Code steckt hier drin.
+        """
+        username = self.text_box_1.text
+        password = self.text_box_2.text
 
-    if self.check_box_4.checked:
-      is_valid = anvil.server.call('check_login_unsafe', username, password)
-    else:
-      is_valid = anvil.server.call('check_login', username, password)
+        if mode == "unsafe":
+            result = anvil.server.call('login_insecure', username, password)
+        else:
+            result = anvil.server.call('login_secure', username, password)
+        
+        if result == "Eingeloggt!":
+            self.label_status.text = result
+          
+            #open_form('Form2')
+        else:
+            self.label_status.text = result
 
-    if is_valid:
-      self.Loginbox.text = "geschafft"
-      open_form(Form2())  # Erstelle eine Instanz von Form2
-    else:
-      self.Loginbox.text = "nicht geschafft"
+    def text_box_2_pressed_enter(self, **event_args):
+        """
+        Wird aufgerufen, sobald man im Passwort-Feld Enter drückt.
+        Hier kannst du ebenfalls entscheiden, ob du 'unsafe' oder 'safe' wählst.
+        """
+        # Beispiel: standardmäßig den sicheren Login nutzen
+        #self.perform_login(mode="safe")
 
+    def button_unsafe_clicked(self, **event_args):
+      """This method is called when the radio button is selected."""
+      self.perform_login(mode="unsafe")
 
-
-  
+    def button_nsafe_clicked(self, **event_args):
+      """This method is called when the radio button is selected."""
+      self.perform_login(mode="safe")
