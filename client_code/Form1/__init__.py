@@ -8,8 +8,6 @@ class Form1(Form1Template):
 
     def perform_login(self, mode):
         """
-        'mode' kann z.B. 'unsafe' oder 'safe' sein.
-        Der eigentliche Login-Code steckt hier drin.
         """
         username = self.text_box_1.text
         password = self.text_box_2.text
@@ -28,11 +26,7 @@ class Form1(Form1Template):
 
     def text_box_2_pressed_enter(self, **event_args):
         """
-        Wird aufgerufen, sobald man im Passwort-Feld Enter drückt.
-        Hier kannst du ebenfalls entscheiden, ob du 'unsafe' oder 'safe' wählst.
         """
-        # Beispiel: standardmäßig den sicheren Login nutzen
-        #self.perform_login(mode="safe")
 
     def button_unsafe_clicked(self, **event_args):
       """This method is called when the radio button is selected."""
