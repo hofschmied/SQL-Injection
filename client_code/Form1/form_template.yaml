@@ -23,7 +23,7 @@ components:
     type: CheckBox
   - event_bindings: {click: button_1_click}
     layout_properties: {grid_position: 'GYOMBP,WKIOSC'}
-    name: button_1
+    name: btn_login
     properties: {text: enter}
     type: Button
   - layout_properties: {grid_position: 'YXOJDV,BNUXCD'}
