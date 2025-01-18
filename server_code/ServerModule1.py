@@ -9,8 +9,6 @@ import hashlib
 import re
 import urllib.parse
 
-
-
 @anvil.server.callable
 def login(password, username, isPossible):
     if isPossible:
@@ -55,7 +53,6 @@ def getAccno(username, password):
     else:
         return res[0][0]
 
-
 @anvil.server.callable
 def getQuery(url):
     query_string = url.split('?')[-1] if '?' in url else ''
@@ -65,7 +62,6 @@ def getQuery(url):
             return query_params["AccountNo"][0]
     return None
 
-
 @anvil.server.callable
 def getBalance(account_id):
     con = sqlite3.connect(data_files["database.db"])
@@ -73,7 +69,6 @@ def getBalance(account_id):
     query = "SELECT balance FROM Balances WHERE AccountNo = ?"
     res = list(cursor.execute(query, (account_id,)))
     return res[0][0]
-
 
 @anvil.server.callable
 def getUsrId(account_id):
@@ -98,7 +93,6 @@ def getUsrId(account_id):
         return f"Welcome {user}! Your balance is {balance}."
     else:
         return f"User not found.<br>{query_user}<br>{query_balance}"
-
 
 @anvil.server.callable
 def resetSession():
