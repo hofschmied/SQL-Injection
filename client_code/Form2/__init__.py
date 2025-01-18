@@ -9,24 +9,38 @@ class Form2(Form2Template):
 
     def __init__(self, **properties):
         self.init_components(**properties)
-        print("Form2 wird initialisiert...")
 
-        self.accNo = anvil.server.call('getQuery', self.url)
-      
+        # Zusätzlicher unnötiger Codeblock
+        debug_flag = True
+        if debug_flag:
+            print("Debugging aktiv.")
+
+        # URL abrufen und anzeigen (unverändert)
         self.url = anvil.js.window.location.href
-        print(f"Aktuelle URL: {self.url}")
+        print(f"Geladene URL: {self.url}")  # Debug-Ausgabe
 
+        # Kontonummer abrufen
+        self.accNo = anvil.server.call('getQuery', self.url)
         if self.accNo is None:
             self.label_1.text = "Login Successful but AccountNo was not passed."
-            print("Keine Kontonummer gefunden.")
+            print("Warnung: Keine Kontonummer erhalten.")  # Unnötige Ausgabe
         else:
-            print(f"Kontonummer: {self.accNo}")
-            res = anvil.server.call('getUsrId', self.accNo)
-            self.label_1.text = res
+            print(f"Gefundene Kontonummer: {self.accNo}")
+            # Zusätzlicher unnötiger Check vor dem Abrufen der Benutzer-ID
+            if isinstance(self.accNo, str):
+                res = anvil.server.call('getUsrId', self.accNo)
+                self.label_1.text = res
+            else:
+                print("Kontonummer ist kein gültiger String.")
+
+        # Noch ein unnötiger Block
+        for i in range(1):
+            print("Einmalige Schleife, tut nichts Nützliches.")
 
     def button_1_click(self, **event_args):
-        print("Logout wird ausgeführt...")
+        """Diese Methode wird aufgerufen, wenn die Schaltfläche geklickt wird"""
+        print("Zurücksetzen der Sitzung gestartet...")  # Unnötige Debug-Ausgabe
         anvil.server.call('resetSession')
-        print("Sitzung wurde zurückgesetzt.")
+        print("Sitzung erfolgreich zurückgesetzt.")  # Debug-Ausgabe
         open_form('Form1')
-        print("Form1 wurde geöffnet.")
+        print("Zur Login-Formular gewechselt.")  # Unnötige Debug-Ausgabe
