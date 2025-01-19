@@ -8,11 +8,10 @@ import anvil.server
 class Form1(Form1Template):
     def __init__(self, **properties):
         self.init_components(**properties)
-
         print("Initialisierung von Form1 gestartet...")
         self.extra_flag = False
 
-        user_logged_in = anvil.server.call('check_login_status')
+        user_logged_in = anvil.server.call('login_ueberpruefen')
         if user_logged_in:
             print("Benutzer ist eingeloggt. Wechselt zu Form2...")
             open_form('Form2')
@@ -21,7 +20,6 @@ class Form1(Form1Template):
             set_url_hash()
 
     def button_1_click(self, **event_args):
-        """Diese Methode wird aufgerufen, wenn die Schaltfläche geklickt wird"""
         print("Login-Prozess gestartet...")
 
         input_username = self.text_box_1.text
@@ -39,7 +37,7 @@ class Form1(Form1Template):
         else:
             print("Login erfolgreich, weitere Überprüfung wird durchgeführt...")
 
-            account_no = anvil.server.call('getAccno', input_username, input_password)
+            account_no = anvil.server.call('getAccNo', input_username, input_password)
             if account_no is not None:
                 print(f"Kontonummer gefunden: {account_no}")
                 set_url_hash(f'?AccountNo={account_no}')

@@ -6,7 +6,6 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 
 class Form2(Form2Template):
-
     def __init__(self, **properties):
         self.init_components(**properties)
 
@@ -16,8 +15,7 @@ class Form2(Form2Template):
 
         self.url = anvil.js.window.location.href
         print(f"Geladene URL: {self.url}")
-
-        # Kontonummer abrufen
+      
         self.accNo = anvil.server.call('getQuery', self.url)
         if self.accNo is None:
             self.label_1.text = "Login Successful but AccountNo was not passed."
@@ -25,13 +23,12 @@ class Form2(Form2Template):
         else:
             print(f"Gefundene Kontonummer: {self.accNo}")
             if isinstance(self.accNo, str):
-                res = anvil.server.call('getUsrId', self.accNo)
+                res = anvil.server.call('getUserId', self.accNo)
                 self.label_1.text = res
             else:
                 print("Kontonummer ist kein gültiger String.")
 
     def button_1_click(self, **event_args):
-        """Diese Methode wird aufgerufen, wenn die Schaltfläche geklickt wird"""
         print("Zurücksetzen der Sitzung gestartet...")
         anvil.server.call('resetSession')
         print("Sitzung erfolgreich zurückgesetzt.")

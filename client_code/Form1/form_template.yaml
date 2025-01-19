@@ -42,24 +42,6 @@ components:
   name: label_5
   properties: {text: SQL-Injection}
   type: Label
-- components:
-  - layout_properties: {grid_position: 'JYLALR,JNZEYO'}
-    name: check_box_2
-    properties: {text: Level 1}
-    type: CheckBox
-  - event_bindings: {change: check_box_3_change}
-    layout_properties: {grid_position: 'FRSRDD,NZBHQI'}
-    name: check_box_3
-    properties: {text: Level 2}
-    type: CheckBox
-  - layout_properties: {grid_position: 'ODMDJK,JTYZWX'}
-    name: check_box_4
-    properties: {text: Level 3}
-    type: CheckBox
-  layout_properties: {slot: left-nav}
-  name: column_panel_1
-  properties: {}
-  type: ColumnPanel
 container:
   properties: {html: '@theme:standard-page.html'}
   type: HtmlTemplate

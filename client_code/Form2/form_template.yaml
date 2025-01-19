@@ -21,28 +21,6 @@ components:
   name: navbar_links
   properties: {}
   type: FlowPanel
-- components:
-  - components:
-    - layout_properties: {grid_position: 'MOTCXL,TBNREW'}
-      name: check_box_2
-      properties: {text: Level 1}
-      type: CheckBox
-    - layout_properties: {grid_position: 'JPSZRM,GMDRRO'}
-      name: check_box_6
-      properties: {text: Level 2}
-      type: CheckBox
-    - layout_properties: {grid_position: 'CAZEOL,BSTQVR'}
-      name: check_box_4
-      properties: {text: Level 3}
-      type: CheckBox
-    layout_properties: {grid_position: 'WUFGOI,UKNAVZ'}
-    name: check_box_3
-    properties: {}
-    type: ColumnPanel
-  layout_properties: {slot: left-nav}
-  name: column_panel_1
-  properties: {}
-  type: ColumnPanel
 container:
   properties: {html: '@theme:standard-page.html'}
   type: HtmlTemplate

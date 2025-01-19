@@ -23,15 +23,7 @@ def getQuery(url):
     return None
 
 @anvil.server.callable
-def getBalance(account_id):
-    con = sqlite3.connect(data_files["database.db"])
-    cursor = con.cursor()
-    query = "SELECT balance FROM Balances WHERE AccountNo = ?"
-    res = list(cursor.execute(query, (account_id,)))
-    return res[0][0]
-
-@anvil.server.callable
-def getUsrId(account_id):
+def getUserId(account_id):
     con = sqlite3.connect(data_files["database.db"])
     cursor = con.cursor()
 
@@ -55,6 +47,15 @@ def getUsrId(account_id):
         return f"User not found.<br>{query_user}<br>{query_balance}"
 
 @anvil.server.callable
+def getBalance(account_id):
+    con = sqlite3.connect(data_files["database.db"])
+    cursor = con.cursor()
+    query = "SELECT balance FROM Balances WHERE AccountNo = ?"
+    res = list(cursor.execute(query, (account_id,)))
+    return res[0][0]
+
+
+@anvil.server.callable
 def login(password, username, isPossible):
     if isPossible:
         pattern = "[0-9A-Za-z]+$"
@@ -73,11 +74,19 @@ def login(password, username, isPossible):
         return [f"Wrong Username or Password!", False]
     else:
         anvil.server.session["login"] = True
-        anvil.server.session['accNo'] = anvil.server.call('getAccno', username, password)
+        anvil.server.session['accNo'] = anvil.server.call('getAccNo', username, password)
         return ["", True]
 
 @anvil.server.callable
-def getAccno(username, password):
+def login_ueberpruefen():
+    if 'login' in anvil.server.session:
+        return anvil.server.session['login']
+    else:
+        anvil.server.session['login'] = False
+        return anvil.server.session['login']
+
+@anvil.server.callable
+def getAccNo(username, password):
     con = sqlite3.connect(data_files["database.db"])
     cursor = con.cursor()
     query = "SELECT AccountNo FROM Users WHERE username = ? AND password = ?"
@@ -87,11 +96,3 @@ def getAccno(username, password):
         return None
     else:
         return res[0][0]
-
-@anvil.server.callable
-def check_login_status():
-    if 'login' in anvil.server.session:
-        return anvil.server.session['login']
-    else:
-        anvil.server.session['login'] = False
-        return anvil.server.session['login']
