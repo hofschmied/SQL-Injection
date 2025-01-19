@@ -10,48 +10,8 @@ import re
 import urllib.parse
 
 @anvil.server.callable
-def login(password, username, isPossible):
-    if isPossible:
-        pattern = "[0-9A-Za-z]+$"
-        if not re.match(pattern, username):
-            return ["Error: Username should only contain letters and numbers!", False]
-        if not re.match(pattern, password):
-            return ["Error: Password should only contain letters and numbers!", False]
-
-    conn = sqlite3.connect(data_files['database.db'])
-    cursor = conn.cursor()
-    query = f"SELECT username, isAdmin FROM Users WHERE username = '{username}' AND password = '{password}';"
-    res = list(cursor.execute(query))
-
-    conn.close()
-    if len(res) == 0:
-        return [f"Wrong Username or Password!", False]
-    else:
-        anvil.server.session["login"] = True
-        anvil.server.session['accNo'] = anvil.server.call('getAccno', username, password)
-        return ["", True]
-
-
-@anvil.server.callable
-def check_login_status():
-    if 'login' in anvil.server.session:
-        return anvil.server.session['login']
-    else:
-        anvil.server.session['login'] = False
-        return anvil.server.session['login']
-
-
-@anvil.server.callable
-def getAccno(username, password):
-    con = sqlite3.connect(data_files["database.db"])
-    cursor = con.cursor()
-    query = "SELECT AccountNo FROM Users WHERE username = ? AND password = ?"
-    res = list(cursor.execute(query, (username, password)))
-    con.close()
-    if len(res) == 0:
-        return None
-    else:
-        return res[0][0]
+def resetSession():
+    anvil.server.session["login"] = False
 
 @anvil.server.callable
 def getQuery(url):
@@ -95,5 +55,43 @@ def getUsrId(account_id):
         return f"User not found.<br>{query_user}<br>{query_balance}"
 
 @anvil.server.callable
-def resetSession():
-    anvil.server.session["login"] = False
+def login(password, username, isPossible):
+    if isPossible:
+        pattern = "[0-9A-Za-z]+$"
+        if not re.match(pattern, username):
+            return ["Error: Username should only contain letters and numbers!", False]
+        if not re.match(pattern, password):
+            return ["Error: Password should only contain letters and numbers!", False]
+
+    conn = sqlite3.connect(data_files['database.db'])
+    cursor = conn.cursor()
+    query = f"SELECT username, isAdmin FROM Users WHERE username = '{username}' AND password = '{password}';"
+    res = list(cursor.execute(query))
+
+    conn.close()
+    if len(res) == 0:
+        return [f"Wrong Username or Password!", False]
+    else:
+        anvil.server.session["login"] = True
+        anvil.server.session['accNo'] = anvil.server.call('getAccno', username, password)
+        return ["", True]
+
+@anvil.server.callable
+def getAccno(username, password):
+    con = sqlite3.connect(data_files["database.db"])
+    cursor = con.cursor()
+    query = "SELECT AccountNo FROM Users WHERE username = ? AND password = ?"
+    res = list(cursor.execute(query, (username, password)))
+    con.close()
+    if len(res) == 0:
+        return None
+    else:
+        return res[0][0]
+
+@anvil.server.callable
+def check_login_status():
+    if 'login' in anvil.server.session:
+        return anvil.server.session['login']
+    else:
+        anvil.server.session['login'] = False
+        return anvil.server.session['login']
